@@ -8,20 +8,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - container: wpilib/roborio-cross-ubuntu:2025-22.04
-            artifact-name: Athena
-            build-options: "-Ponlylinuxathena"
-          - container: wpilib/raspbian-cross-ubuntu:bookworm-22.04
-            artifact-name: Arm32
-            build-options: "-Ponlylinuxarm32"
-          - container: wpilib/aarch64-cross-ubuntu:bookworm-22.04
+          - container: wpilib/systemcore-cross-ubuntu:2025-24.04
+            artifact-name: SystemCore
+            build-options: "-Ponlylinuxsystemcore"
+          - container: wpilib/aarch64-cross-ubuntu:bookworm-24.04
             artifact-name: Arm64
             build-options: "-Ponlylinuxarm64"
           - container: wpilib/ubuntu-base:22.04
             artifact-name: Linux
             build-options: ""
     name: "Build - ${{ matrix.artifact-name }}"
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container: ${{ matrix.container }}
     steps:
       - uses: actions/checkout@v4
@@ -39,7 +36,7 @@ jobs:
           path: build/allOutputs
 
   build-host:
-    env: 
+    env:
       MACOSX_DEPLOYMENT_TARGET: 13.3
     strategy:
       fail-fast: false

@@ -1,8 +1,7 @@
 import org.gradle.internal.os.OperatingSystem
 
 nativeUtils.addWpiNativeUtils()
-nativeUtils.withCrossRoboRIO()
-nativeUtils.withCrossLinuxArm32()
+nativeUtils.withCrossSystemCore()
 nativeUtils.withCrossLinuxArm64()
 
 nativeUtils {
@@ -10,7 +9,6 @@ nativeUtils {
         configureDependencies {
             wpiVersion = wpilibVersion
             opencvYear = "frc2025"
-            niLibVersion = "2025.0.0"
             opencvVersion = "4.10.0-2"
         }
     }
@@ -22,10 +20,10 @@ nativeUtils.wpi.addWarningsAsErrors()
 nativeUtils.setSinglePrintPerPlatform()
 
 model {
-    // Uncomment this, and remove lines below it to enable builds for just roborio
+    // Uncomment this, and remove lines below it to enable builds for just systemcore
     // components {
     //     all {
-    //         targetPlatform nativeUtils.wpi.platforms.roborio
+    //         targetPlatform nativeUtils.wpi.platforms.systemcore
     //     }
     // }
     components {

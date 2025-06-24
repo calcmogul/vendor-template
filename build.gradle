@@ -5,17 +5,18 @@ plugins {
   id 'java'
   id 'google-test'
   id 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin' version '2025.0'
-  id 'edu.wpi.first.NativeUtils' version '2025.9.0'
+  id 'edu.wpi.first.NativeUtils' version '2025.12.1'
   id 'edu.wpi.first.GradleJni' version '1.1.0'
   id 'edu.wpi.first.GradleVsCode' version '2.1.0'
 }
 
 // WPILib Version
-ext.wpilibVersion = "2025.+"
+ext.wpilibVersion = "2027.+"
 
 repositories {
   mavenCentral()
 }
+wpilibRepositories.use2027Repos()
 if (project.hasProperty('releaseMode')) {
   wpilibRepositories.addAllReleaseRepositories(project)
 } else {
@@ -40,6 +41,7 @@ dependencies {
     implementation "edu.wpi.first.wpiutil:wpiutil-java:$wpilibVersion"
     implementation "edu.wpi.first.wpimath:wpimath-java:$wpilibVersion"
     implementation "edu.wpi.first.wpiunits:wpiunits-java:$wpilibVersion"
+    implementation "edu.wpi.first.datalog:datalog-java:$wpilibVersion"
     implementation "edu.wpi.first.hal:hal-java:$wpilibVersion"
     implementation "org.ejml:ejml-simple:0.43.1"
     implementation "com.fasterxml.jackson.core:jackson-annotations:2.15.2"
@@ -61,7 +63,7 @@ test {
     }
 }
 
-if (project.hasProperty('onlylinuxathena') || project.hasProperty('onlylinuxarm32') || project.hasProperty('onlylinuxarm64') || project.hasProperty('onlywindowsarm64') || project.hasProperty('onlylinuxsystemcore')) {
+if (project.hasProperty('onlylinuxarm64') || project.hasProperty('onlywindowsarm64') || project.hasProperty('onlylinuxsystemcore')) {
     test.enabled = false
 }
 
@@ -115,15 +117,14 @@ model {
       binaries.all {
         lib library: 'VendorDriver', linkage: 'shared'
       }
-      nativeUtils.useRequiredLibrary(it, 'wpilib_shared')
+      nativeUtils.useRequiredLibrary(it, 'wpilib_shared_2027')
     }
 
     VendorDriver(JniNativeLibrarySpec) {
       enableCheckTask true
       javaCompileTasks << compileJava
-      jniCrossCompileOptions << JniCrossCompileOptions(nativeUtils.wpi.platforms.roborio)
+      jniCrossCompileOptions << JniCrossCompileOptions(nativeUtils.wpi.platforms.systemcore)
       // Leave these for future proofing
-      jniCrossCompileOptions << JniCrossCompileOptions(nativeUtils.wpi.platforms.linuxarm32)
       jniCrossCompileOptions << JniCrossCompileOptions(nativeUtils.wpi.platforms.linuxarm64)
       sources {
         cpp {
@@ -137,7 +138,7 @@ model {
         }
       }
 
-      nativeUtils.useRequiredLibrary(it, "driver_shared")
+      nativeUtils.useRequiredLibrary(it, "driver_shared_2027")
     }
   }
   testSuites {
@@ -162,7 +163,7 @@ model {
           }
         }
 
-        nativeUtils.useRequiredLibrary(it, "wpilib_executable_shared", "googletest_static")
+        nativeUtils.useRequiredLibrary(it, "wpilib_shared_2027", "googletest_static")
     }
 
     VendorDriverTest {
@@ -172,7 +173,7 @@ model {
                 include '**/*.cpp'
             }
         }
-        nativeUtils.useRequiredLibrary(it, "wpilib_executable_shared", "googletest_static")
+        nativeUtils.useRequiredLibrary(it, "wpilib_shared_2027", "googletest_static")
     }
   }
 }
