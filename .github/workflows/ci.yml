@@ -14,7 +14,7 @@ jobs:
           - container: wpilib/aarch64-cross-ubuntu:bookworm-24.04
             artifact-name: Arm64
             build-options: "-Ponlylinuxarm64"
-          - container: wpilib/ubuntu-base:22.04
+          - container: wpilib/ubuntu-base:24.04
             artifact-name: Linux
             build-options: ""
     name: "Build - ${{ matrix.artifact-name }}"
