@@ -5,7 +5,7 @@ plugins {
   id 'java'
   id 'google-test'
   id 'org.wpilib.WPILibRepositoriesPlugin' version '2027.0.0'
-  id 'org.wpilib.NativeUtils' version '2027.1.1'
+  id 'org.wpilib.NativeUtils' version '2027.7.1'
   id 'org.wpilib.GradleJni' version '2027.0.0'
   id 'org.wpilib.GradleVsCode' version '2027.0.0'
 }
@@ -24,10 +24,10 @@ if (project.hasProperty('releaseMode')) {
 }
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_17
-  targetCompatibility = JavaVersion.VERSION_17
+  sourceCompatibility = JavaVersion.VERSION_25
+  targetCompatibility = JavaVersion.VERSION_25
 }
-var javaVersion = "17"
+var javaVersion = "25"
 
 // Apply C++ configuration
 apply from: 'config.gradle'
@@ -35,6 +35,7 @@ apply from: 'config.gradle'
 // Apply Java configuration
 dependencies {
     annotationProcessor "io.avaje:avaje-jsonb-generator:3.11"
+    implementation "io.avaje:avaje-jsonb:3.11"
     implementation "org.wpilib.cscore:cscore-java:$wpilibVersion"
     implementation "org.wpilib.cameraserver:cameraserver-java:$wpilibVersion"
     implementation "org.wpilib.ntcore:ntcore-java:$wpilibVersion"
@@ -44,12 +45,12 @@ dependencies {
     implementation "org.wpilib.wpiunits:wpiunits-java:$wpilibVersion"
     implementation "org.wpilib.datalog:datalog-java:$wpilibVersion"
     implementation "org.wpilib.hal:hal-java:$wpilibVersion"
-    implementation "org.ejml:ejml-simple:0.43.1"
-    implementation "io.avaje:avaje-jsonb:3.11"
-    implementation 'edu.wpi.first.thirdparty.frc2025.opencv:opencv-java:4.10.0-2'
+    implementation "org.ejml:ejml-simple:0.44.0"
+    implementation 'org.wpilib.thirdparty.opencv:opencv-java:2027-4.13.0-3'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'us.hebi.quickbuf:quickbuf-runtime:1.4'
 }
 
 // Set up java tests
@@ -58,7 +59,7 @@ test {
     systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
     testLogging {
         events "failed"
-        exceptionFormat "full"
+        exceptionFormat = "full"
     }
 }
 
@@ -180,5 +181,5 @@ model {
 apply from: 'publish.gradle'
 
 wrapper {
-  gradleVersion '9.2.0'
+  gradleVersion = '9.4.1'
 }
